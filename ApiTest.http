@@ -1,0 +1,61 @@
+@host = http://localhost:7071
+
+### user.index
+GET {{host}}/api/person
+
+### user.index
+GET {{host}}/api/person?name=name1
+
+### user.index
+GET {{host}}/api/person?name=name1&name=name2
+
+### user.index
+GET {{host}}/api/person?provider=provider
+
+### user.show
+GET {{host}}/api/person/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
+
+### user.delete
+DELETE {{host}}/person/user/id/569b5d23-569a-4325-9164-12198991f869
+
+### user.store
+POST {{host}}/api/person
+
+{
+    "name": "放浪軍師",
+    "job": "エンジニア",
+    "attributes": [
+        "変態","天才","変人"
+    ],
+    "items":[
+        {
+            "name": "デスクトップパソコン",
+            "content": "VRやるためにそこそこのしたヤツ"
+        },
+        {
+            "name": "ノートパソコン",
+            "content": "乱ちゃんのシールが貼ってあるMACPC"
+        }        
+    ]
+}
+
+### user.update
+PUT {{host}}/api/user/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
+
+{
+    "provider": "provider",
+    "name": "hoge",
+    "roles": [
+        0
+    ],
+    "machines": [
+        {
+            "id": "MachineId",
+            "name": "MachineName"
+        },
+        {
+            "id": "MachineId2",
+            "name": "MachineName2"
+        }
+    ]
+}

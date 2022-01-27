@@ -1,24 +1,27 @@
 @host = http://localhost:7071
 
-### user.index
+### person.index
 GET {{host}}/api/person
 
-### user.index
-GET {{host}}/api/person?name=name1
+### person.index
+GET {{host}}/api/person?name=放浪軍師
 
-### user.index
-GET {{host}}/api/person?name=name1&name=name2
+### person.index
+GET {{host}}/api/person?name=夏狂乱
 
-### user.index
+### person.index
+GET {{host}}/api/person?name=放浪軍師&name=name2
+
+### person.index
 GET {{host}}/api/person?provider=provider
 
-### user.show
+### person.show
 GET {{host}}/api/person/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
 
-### user.delete
-DELETE {{host}}/person/user/id/569b5d23-569a-4325-9164-12198991f869
+### person.delete
+DELETE {{host}}/person/person/id/569b5d23-569a-4325-9164-12198991f869
 
-### user.store
+### person.store
 POST {{host}}/api/person
 
 {
@@ -39,8 +42,29 @@ POST {{host}}/api/person
     ]
 }
 
-### user.update
-PUT {{host}}/api/user/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
+### person.store
+POST {{host}}/api/person
+
+{
+    "name": "夏狂乱",
+    "job": "アプリケーション",
+    "attributes": [
+        "ランダム","マルチプラットフォーム","抽選"
+    ],
+    "items":[
+        {
+            "name": "サイコロ",
+            "content": "髪飾りに2個付いている"
+        },
+        {
+            "name": "巫女服",
+            "content": "作者の趣味で着ている"
+        }        
+    ]
+}
+
+### person.update
+PUT {{host}}/api/person/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
 
 {
     "provider": "provider",

@@ -29,13 +29,13 @@ namespace Api.Persons {
 
             var names = req.Query["name"];
             var jobs = req.Query["job"];
-            var attributes = req.Query["attributes"];
+            var attributes = req.Query["attribute"];
 
             Uri collectionUri = UriFactory.CreateDocumentCollectionUri(databaseName, collectionName);
             var query = client.CreateDocumentQuery<Person>(collectionUri, new FeedOptions { EnableCrossPartitionQuery = true })
-                .Where(p => string.IsNullOrWhiteSpace(names) || names.Contains(p.Name))
-                .Where(p => string.IsNullOrWhiteSpace(jobs) || jobs.Contains(p.Job))
-                // .Where(p => string.IsNullOrWhiteSpace(attributes) || attributes.Any(x => p.Attributes.Contains(x))) © ‚È‚ñ‚©“{‚ç‚ê‚éc‰½ŒÌc
+                .Where(p => string.IsNullOrWhiteSpace(names) || p.Name.Contains(names))
+                .Where(p => string.IsNullOrWhiteSpace(jobs) || p.Job.Contains(jobs))
+                .Where(p => string.IsNullOrWhiteSpace(attributes) || p.Attributes.Contains(attributes))
                 .AsDocumentQuery();
 
             var persons = new List<Person>();

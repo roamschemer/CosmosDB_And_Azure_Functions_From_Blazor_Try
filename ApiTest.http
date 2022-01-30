@@ -4,22 +4,25 @@
 GET {{host}}/api/person
 
 ### person.index
-GET {{host}}/api/person?name=放浪軍師
+GET {{host}}/api/person?name=放
 
 ### person.index
-GET {{host}}/api/person?name=夏狂乱
+GET {{host}}/api/person?name=軍師
 
 ### person.index
-GET {{host}}/api/person?name=放浪軍師&name=name2
+GET {{host}}/api/person?job=アプリケーション
 
 ### person.index
-GET {{host}}/api/person?provider=provider
+GET {{host}}/api/person?attribute=ランダム
 
 ### person.show
-GET {{host}}/api/person/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
+GET {{host}}/api/person/id/b0e6177f-27ce-46f1-8743-fdd32a964754
+
+### person.show
+GET {{host}}/api/person/エンジニア/b0e6177f-27ce-46f1-8743-fdd32a964754
 
 ### person.delete
-DELETE {{host}}/person/person/id/569b5d23-569a-4325-9164-12198991f869
+DELETE {{host}}/api/person/エンジニア/75e1c441-9e94-4dae-9556-17bc16773c31
 
 ### person.store
 POST {{host}}/api/person
@@ -28,7 +31,7 @@ POST {{host}}/api/person
     "name": "放浪軍師",
     "job": "エンジニア",
     "attributes": [
-        "変態","天才","変人"
+        "変態","変人"
     ],
     "items":[
         {
@@ -63,23 +66,36 @@ POST {{host}}/api/person
     ]
 }
 
-### person.update
-PUT {{host}}/api/person/id/e66e343a-5e2f-4053-8e2b-1185e8faef88
+### person.store
+POST {{host}}/api/person
 
 {
-    "provider": "provider",
-    "name": "hoge",
-    "roles": [
-        0
+    "name": "漆原鎌足",
+    "job": "エンジニア",
+    "attributes": [
+        "退魔士","ゲーム","VTuber"
     ],
-    "machines": [
+    "items":[
         {
-            "id": "MachineId",
-            "name": "MachineName"
-        },
+            "name": "日本刀",
+            "content": "沢山差している"
+        }        
+    ]
+}
+
+### person.update
+PUT {{host}}/api/person/id/c6bde71e-361c-447d-a096-95d6bb4603a7
+
+{
+    "name": "放浪群子",
+    "job": "aaa",
+    "attributes": [
+        "変態","変人"
+    ],
+    "items":[
         {
-            "id": "MachineId2",
-            "name": "MachineName2"
+            "name": "デスクトップパソコン",
+            "content": "VRやるためにそこそこのしたヤツ"
         }
     ]
 }

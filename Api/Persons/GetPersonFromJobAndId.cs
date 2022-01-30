@@ -13,13 +13,13 @@ namespace Api.Persons {
     public static class GetPersonFromJobAndId {
         [FunctionName("GetPersonFromJobAndId")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "person/{partitionKey}/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "person/{job}/{id}")] HttpRequest req,
             [CosmosDB(
                 databaseName: "gunshi-db", //Database id
                 collectionName: "persons", //Container id
                 ConnectionStringSetting = "CosmosDbConnectionString",
                 Id = "{id}",
-                PartitionKey = "{partitionKey}")] Person person,
+                PartitionKey = "{job}")] Person person,
             ILogger log) {
             log.LogInformation("C# HTTP trigger function processed a request.");
 

@@ -20,7 +20,6 @@ namespace Api.Persons {
                 ConnectionStringSetting = "CosmosDbConnectionString")]
             IAsyncCollector<Person> documentsOut,
             ILogger log) {
-
             try {
                 string requestBody;
                 using (StreamReader streamReader = new StreamReader(req.Body)) {

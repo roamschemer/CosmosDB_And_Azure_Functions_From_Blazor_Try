@@ -24,8 +24,11 @@ namespace Api.Persons {
             )]IEnumerable<Person> persons,
             ILogger log) {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
-            return new OkObjectResult(persons.First());
+            try {
+                return new OkObjectResult(persons.First());
+            } catch (Exception ex) {
+                return new BadRequestObjectResult(ex);
+            }
         }
     }
 }

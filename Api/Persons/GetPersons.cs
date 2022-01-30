@@ -26,26 +26,26 @@ namespace Api.Persons {
             var databaseName = "gunshi-db"; //Database id
             var collectionName = "persons"; //Container id
             log.LogInformation("C# HTTP trigger function processed a request.");
-
-            var names = req.Query["name"];
-            var jobs = req.Query["job"];
-            var attributes = req.Query["attribute"];
-
-            Uri collectionUri = UriFactory.CreateDocumentCollectionUri(databaseName, collectionName);
-            var query = client.CreateDocumentQuery<Person>(collectionUri, new FeedOptions { EnableCrossPartitionQuery = true })
-                .Where(p => string.IsNullOrWhiteSpace(names) || p.Name.Contains(names))
-                .Where(p => string.IsNullOrWhiteSpace(jobs) || p.Job.Contains(jobs))
-                .Where(p => string.IsNullOrWhiteSpace(attributes) || p.Attributes.Contains(attributes))
-                .AsDocumentQuery();
-
-            var persons = new List<Person>();
-            while (query.HasMoreResults) {
-                foreach (Person result in await query.ExecuteNextAsync()) {
-                    persons.Add(result);
+            try {
+                var names = req.Query["name"];
+                var jobs = req.Query["job"];
+                var attributes = req.Query["attribute"];
+                Uri collectionUri = UriFactory.CreateDocumentCollectionUri(databaseName, collectionName);
+                var query = client.CreateDocumentQuery<Person>(collectionUri, new FeedOptions { EnableCrossPartitionQuery = true })
+                    .Where(p => string.IsNullOrWhiteSpace(names) || p.Name.Contains(names))
+                    .Where(p => string.IsNullOrWhiteSpace(jobs) || p.Job.Contains(jobs))
+                    .Where(p => string.IsNullOrWhiteSpace(attributes) || p.Attributes.Contains(attributes))
+                    .AsDocumentQuery();
+                var persons = new List<Person>();
+                while (query.HasMoreResults) {
+                    foreach (Person result in await query.ExecuteNextAsync()) {
+                        persons.Add(result);
+                    }
                 }
+                return new OkObjectResult(persons);
+            } catch (Exception ex) {
+                return new BadRequestObjectResult(ex);
             }
-
-            return new OkObjectResult(persons);
         }
     }
 }

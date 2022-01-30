@@ -22,8 +22,11 @@ namespace Api.Persons {
                 PartitionKey = "{job}")] Person person,
             ILogger log) {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
-            return new OkObjectResult(person);
+            try {
+                return new OkObjectResult(person);
+            } catch (Exception ex) {
+                return new BadRequestObjectResult(ex);
+            }
         }
     }
 }

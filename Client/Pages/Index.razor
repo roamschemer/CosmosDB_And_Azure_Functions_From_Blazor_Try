@@ -1,2 +1,54 @@
 ﻿@page "/"
+@inject HttpClient http
 
+@if (persons == null) {
+	<p><em>Loading...</em></p>
+} else {
+	@foreach (var person in persons) {
+		<div class="card">
+			<div class="card-header">
+				@person.Name
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">Job:@person.Job</h5>
+				<p class="card-text">Attributes:@person.Attributes.Aggregate((a, b)=>$"{a},{b}")</p>
+				<p class="card-text">Items:</p>
+				<div class="card-group">
+					@foreach (var item in person.Items) {
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">@item.Name</h5>
+								<h6 class="card-subtitle mb-2 text-muted">@item.Content</h6>
+							</div>
+						</div>
+					}
+				</div>
+				<button class="btn btn-primary" @onclick="@(s => UpdatePerson(person))">Update</button>
+				<button class="btn btn-primary" @onclick="@(s => DeletePerson(person))">Delete</button>
+			</div>
+		</div>
+	}
+	<p />
+	<button class="btn btn-primary" @onclick="@(s => PersonCreate())">Create</button>
+}
+
+@code {
+	private List<Person> persons { get; set; } = new();
+	private async Task UpdatePerson(Person person) {
+
+	}
+	private async Task PersonCreate() {
+
+	}
+	private async Task DeletePerson(Person person) {
+		await http.DeleteAsync($"api/person/{person.Job}/{person.Id}");
+		await GetPersons();
+	}
+	private async Task GetPersons() {
+		persons = await http.GetFromJsonAsync<List<Person>>("api/person");
+	}
+
+	protected override async Task OnInitializedAsync() {
+		await GetPersons();
+	}
+}

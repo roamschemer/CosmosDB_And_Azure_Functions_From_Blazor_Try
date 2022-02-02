@@ -7,5 +7,10 @@ namespace Data {
         public string Name { get; set; }
         [JsonProperty(PropertyName = "content")]
         public string Content { get; set; }
+        public Item(string name, string content) {
+            Name = name;
+            Content = content;
+        }
+
     }
 }

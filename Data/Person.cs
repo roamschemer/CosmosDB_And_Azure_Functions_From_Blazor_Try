@@ -13,5 +13,20 @@ namespace Data {
         public List<string> Attributes { get; set; }
         [JsonProperty(PropertyName = "items")]
         public List<Item> Items { get; set; }
+        public Person(Guid id, string name, string job, List<string> attributes, List<Item> items) {
+            Id = id;
+            Name = name;
+            Job = job;
+            Attributes = attributes;
+            Items = items;
+        }
+        public Person(Person person) {
+            Id = person.Id;
+            Name = person.Name;
+            Job = person.Job;
+            Attributes = person.Attributes;
+            Items = person.Items;
+        }
+        public Person() { }
     }
 }

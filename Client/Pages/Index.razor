@@ -7,39 +7,68 @@
 	@foreach (var person in persons) {
 		<BSCard CardType="CardType.Card">
 			<BSCard CardType="CardType.Header">
-				<BSInput InputType="InputType.Text" @bind-Value="person.Name" />
+				@person.Name
 			</BSCard>
 			<BSCard CardType="CardType.Body">
 				<BSCard CardType="CardType.Title">
-					<BSInput InputType="InputType.Text" @bind-Value="person.Job" />
+					@person.Job
 				</BSCard>
 				<BSCard CardType="CardType.Group">
 					@foreach (var item in person.Items) {
 						<BSCard CardType="CardType.Card">
 							<BSCard CardType="CardType.Body">
-								<BSCard CardType="CardType.Title"><BSInput InputType="InputType.Text" @bind-Value="item.Name" /></BSCard>
-								<BSCard CardType="CardType.Subtitle"><BSInput InputType="InputType.Text" @bind-Value="item.Content" /></BSCard>
+								<BSCard CardType="CardType.Title">@item.Name</BSCard>
+								<BSCard CardType="CardType.Subtitle">@item.Content</BSCard>
 							</BSCard>
 						</BSCard>
 					}
 				</BSCard>
-				<BSButton Color="BSColor.Primary" @onclick="@(s => UpdatePerson(person))">Update</BSButton>
+				<BSButton Color="BSColor.Primary" Target="updateModal" @onclick="@(s => EditPerson(person))">Edit</BSButton>
 				<BSButton Color="BSColor.Primary" @onclick="@(s => DeletePerson(person))">Delete</BSButton>
 			</BSCard>
 		</BSCard>
-		<BSButton Color="BSColor.Primary" @onclick="@(s => GetPersons())">Reset</BSButton>
 	}
+	<BSModal DataId="updateModal">
+		<Header>編集</Header>
+		<Content>
+			@if (updatePerson != null) {
+				<BSCard CardType="CardType.Card">
+					<BSCard CardType="CardType.Header">
+						<BSInput InputType="InputType.Text" @bind-Value="updatePerson.Name" />
+					</BSCard>
+					<BSCard CardType="CardType.Body">
+						<BSCard CardType="CardType.Title">
+							<BSInput InputType="InputType.Text" @bind-Value="updatePerson.Job" />
+						</BSCard>
+						<BSCard CardType="CardType.Group">
+							@foreach (var item in updatePerson.Items) {
+								<BSCard CardType="CardType.Card">
+									<BSCard CardType="CardType.Body">
+										<BSCard CardType="CardType.Title"><BSInput InputType="InputType.Text" @bind-Value="item.Name" /></BSCard>
+										<BSCard CardType="CardType.Subtitle"><BSInput InputType="InputType.Text" @bind-Value="item.Content" /></BSCard>
+									</BSCard>
+								</BSCard>
+							}
+						</BSCard>
+					</BSCard>
+				</BSCard>
+			}
+		</Content>
+		<Footer Context="modal">
+			<BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+			<BSButton Color="BSColor.Primary" @onclick="@(s => UpdatePerson())">Update</BSButton>
+		</Footer>
+	</BSModal>
 }
 
 @code {
 	private List<Person> persons { get; set; } = new();
-	private async Task UpdatePerson(Person person) {
-
+	private Person updatePerson { get; set; }
+	
+	private void EditPerson(Person person) {
+		updatePerson = new(person);
 	}
-	private async Task ResetPerson() {
-
-	}
-	private async Task PersonCreate() {
+	private async Task UpdatePerson() {
 
 	}
 	private async Task DeletePerson(Person person) {

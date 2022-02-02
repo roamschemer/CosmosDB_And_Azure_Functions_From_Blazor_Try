@@ -5,31 +5,27 @@
 	<p><em>Loading...</em></p>
 } else {
 	@foreach (var person in persons) {
-		<div class="card">
-			<div class="card-header">
+		<BSCard CardType="CardType.Card">
+			<BSCard CardType="CardType.Header">
 				@person.Name
-			</div>
-			<div class="card-body">
-				<h5 class="card-title">Job:@person.Job</h5>
-				<p class="card-text">Attributes:@person.Attributes.Aggregate((a, b)=>$"{a},{b}")</p>
-				<p class="card-text">Items:</p>
-				<div class="card-group">
+			</BSCard>
+			<BSCard CardType="CardType.Body">
+				<BSCard CardType="CardType.Title">@person.Job</BSCard>
+				<BSCard CardType="CardType.Group">
 					@foreach (var item in person.Items) {
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">@item.Name</h5>
-								<h6 class="card-subtitle mb-2 text-muted">@item.Content</h6>
-							</div>
-						</div>
+						<BSCard CardType="CardType.Card">
+							<BSCard CardType="CardType.Body">
+								<BSCard CardType="CardType.Title">@item.Name</BSCard>
+								<BSCard CardType="CardType.Subtitle">@item.Content</BSCard>
+							</BSCard>
+						</BSCard>
 					}
-				</div>
-				<button class="btn btn-primary" @onclick="@(s => UpdatePerson(person))">Update</button>
-				<button class="btn btn-primary" @onclick="@(s => DeletePerson(person))">Delete</button>
-			</div>
-		</div>
+				</BSCard>
+				<BSButton Color="BSColor.Primary" @onclick="@(s => UpdatePerson(person))">Update</BSButton>
+				<BSButton Color="BSColor.Primary" @onclick="@(s => DeletePerson(person))">Delete</BSButton>
+			</BSCard>
+		</BSCard>
 	}
-	<p />
-	<button class="btn btn-primary" @onclick="@(s => PersonCreate())">Create</button>
 }
 
 @code {

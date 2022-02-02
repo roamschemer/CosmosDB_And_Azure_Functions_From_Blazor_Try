@@ -4,6 +4,8 @@
 @if (persons == null) {
 	<p><em>Loading...</em></p>
 } else {
+	<BSButton Color="BSColor.Primary" @onclick="@(s => GetPersons())">更新</BSButton>
+	<BSButton Color="BSColor.Primary" Target="editModal" @onclick="@(s => EditPerson(null, EditEnum.Create))">追加</BSButton>
 	@foreach (var person in persons) {
 		<BSCard CardType="CardType.Card">
 			<BSCard CardType="CardType.Header">
@@ -23,29 +25,35 @@
 						</BSCard>
 					}
 				</BSCard>
-				<BSButton Color="BSColor.Primary" Target="updateModal" @onclick="@(s => EditPerson(person))">Edit</BSButton>
+				<BSButton Color="BSColor.Primary" Target="editModal" @onclick="@(s => EditPerson(person, EditEnum.Update))">Edit</BSButton>
 				<BSButton Color="BSColor.Primary" @onclick="@(s => DeletePerson(person))">Delete</BSButton>
 			</BSCard>
 		</BSCard>
 	}
-	<BSModal DataId="updateModal">
+	<BSModal DataId="editModal">
 		<Header>編集</Header>
 		<Content>
-			@if (updatePerson != null) {
+			@if (editPerson != null) {
 				<BSCard CardType="CardType.Card">
 					<BSCard CardType="CardType.Header">
-						<BSInput InputType="InputType.Text" @bind-Value="updatePerson.Name" />
+						Name :
+						<BSInput InputType="InputType.Text" @bind-Value="editPerson.Name" />
 					</BSCard>
 					<BSCard CardType="CardType.Body">
 						<BSCard CardType="CardType.Title">
-							<BSInput InputType="InputType.Text" @bind-Value="updatePerson.Job" />
+							Job :
+							@if (editType == EditEnum.Create) {
+								<BSInput InputType="InputType.Text" @bind-Value="@editPerson.Job" />
+							} else {
+								@editPerson.Job
+							}
 						</BSCard>
 						<BSCard CardType="CardType.Group">
-							@foreach (var item in updatePerson.Items) {
+							@foreach (var item in editPerson.Items) {
 								<BSCard CardType="CardType.Card">
 									<BSCard CardType="CardType.Body">
-										<BSCard CardType="CardType.Title"><BSInput InputType="InputType.Text" @bind-Value="item.Name" /></BSCard>
-										<BSCard CardType="CardType.Subtitle"><BSInput InputType="InputType.Text" @bind-Value="item.Content" /></BSCard>
+										<BSCard CardType="CardType.Title">ItemName:<BSInput InputType="InputType.Text" @bind-Value="item.Name" /></BSCard>
+										<BSCard CardType="CardType.Subtitle">ItemContent:<BSInput InputType="InputType.Text" @bind-Value="item.Content" /></BSCard>
 									</BSCard>
 								</BSCard>
 							}
@@ -56,20 +64,38 @@
 		</Content>
 		<Footer Context="modal">
 			<BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
-			<BSButton Color="BSColor.Primary" @onclick="@(s => UpdatePerson())">Update</BSButton>
+			<BSButton Color="BSColor.Primary" @onclick="@(async s => {await SavePerson(); await modal.HideAsync();})">Save</BSButton>
 		</Footer>
 	</BSModal>
 }
 
 @code {
-	private List<Person> persons { get; set; } = new();
-	private Person updatePerson { get; set; }
-	
-	private void EditPerson(Person person) {
-		updatePerson = new(person);
-	}
-	private async Task UpdatePerson() {
+	private List<Person> persons { get; set; }
+	private Person editPerson { get; set; }
+	private enum EditEnum { Create, Update }
+	private EditEnum editType;
 
+	protected override async Task OnInitializedAsync() {
+		await GetPersons();
+	}
+	private async Task EditPerson(Person? person, EditEnum editEnum) {
+		editType = editEnum;
+		if (editType == EditEnum.Update) {
+			if (person == null)
+				return;
+			//editPerson = await http.GetFromJsonAsync<Person>($"api/person/id/{person.Id}"); //効率が悪い方
+			editPerson = await http.GetFromJsonAsync<Person>($"api/person/{person.Job}/{person.Id}"); //効率が良い方
+		} else if (editType == EditEnum.Create) {
+			editPerson = new Person(null, "", "", new List<string>() { "" }, new List<Item>() { new("", ""), new("", "") });
+		}
+	}
+	private async Task SavePerson() {
+		if (editType == EditEnum.Update) {
+			await http.PutAsJsonAsync($"api/person/{editPerson.Id}", editPerson);
+		} else if (editType == EditEnum.Create) {
+			await http.PostAsJsonAsync($"api/person", editPerson);
+		}
+		await GetPersons();
 	}
 	private async Task DeletePerson(Person person) {
 		await http.DeleteAsync($"api/person/{person.Job}/{person.Id}");
@@ -79,7 +105,5 @@
 		persons = await http.GetFromJsonAsync<List<Person>>("api/person");
 	}
 
-	protected override async Task OnInitializedAsync() {
-		await GetPersons();
-	}
+
 }

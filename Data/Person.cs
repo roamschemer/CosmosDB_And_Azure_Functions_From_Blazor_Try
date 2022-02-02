@@ -4,7 +4,7 @@ using System;
 namespace Data {
     public class Person {
         [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
         [JsonProperty(PropertyName = "job")]
@@ -13,7 +13,7 @@ namespace Data {
         public List<string> Attributes { get; set; }
         [JsonProperty(PropertyName = "items")]
         public List<Item> Items { get; set; }
-        public Person(Guid id, string name, string job, List<string> attributes, List<Item> items) {
+        public Person(Guid? id, string name, string job, List<string> attributes, List<Item> items) {
             Id = id;
             Name = name;
             Job = job;

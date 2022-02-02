@@ -7,16 +7,18 @@
 	@foreach (var person in persons) {
 		<BSCard CardType="CardType.Card">
 			<BSCard CardType="CardType.Header">
-				@person.Name
+				<BSInput InputType="InputType.Text" @bind-Value="person.Name" />
 			</BSCard>
 			<BSCard CardType="CardType.Body">
-				<BSCard CardType="CardType.Title">@person.Job</BSCard>
+				<BSCard CardType="CardType.Title">
+					<BSInput InputType="InputType.Text" @bind-Value="person.Job" />
+				</BSCard>
 				<BSCard CardType="CardType.Group">
 					@foreach (var item in person.Items) {
 						<BSCard CardType="CardType.Card">
 							<BSCard CardType="CardType.Body">
-								<BSCard CardType="CardType.Title">@item.Name</BSCard>
-								<BSCard CardType="CardType.Subtitle">@item.Content</BSCard>
+								<BSCard CardType="CardType.Title"><BSInput InputType="InputType.Text" @bind-Value="item.Name" /></BSCard>
+								<BSCard CardType="CardType.Subtitle"><BSInput InputType="InputType.Text" @bind-Value="item.Content" /></BSCard>
 							</BSCard>
 						</BSCard>
 					}
@@ -25,12 +27,16 @@
 				<BSButton Color="BSColor.Primary" @onclick="@(s => DeletePerson(person))">Delete</BSButton>
 			</BSCard>
 		</BSCard>
+		<BSButton Color="BSColor.Primary" @onclick="@(s => GetPersons())">Reset</BSButton>
 	}
 }
 
 @code {
 	private List<Person> persons { get; set; } = new();
 	private async Task UpdatePerson(Person person) {
+
+	}
+	private async Task ResetPerson() {
 
 	}
 	private async Task PersonCreate() {

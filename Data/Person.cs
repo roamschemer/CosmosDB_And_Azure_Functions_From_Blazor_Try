@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json; //Nugetからinstallが必要
-using System;
 
 namespace Data {
     public class Person {

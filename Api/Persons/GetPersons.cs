@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -25,7 +24,6 @@ namespace Api.Persons {
             ILogger log) {
             var databaseName = "gunshi-db"; //Database id
             var collectionName = "persons"; //Container id
-            log.LogInformation("C# HTTP trigger function processed a request.");
             try {
                 var names = req.Query["name"];
                 var jobs = req.Query["job"];

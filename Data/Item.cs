@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json; //Nugetからinstallが必要
-using System;
 
 namespace Data {
     public class Item {
@@ -11,6 +10,5 @@ namespace Data {
             Name = name;
             Content = content;
         }
-
     }
 }

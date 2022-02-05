@@ -1,12 +1,10 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +21,6 @@ namespace Api.Persons {
                 SqlQuery = "select * from users r where r.id = {id}"
             )]IEnumerable<Person> persons,
             ILogger log) {
-            log.LogInformation("C# HTTP trigger function processed a request.");
             try {
                 return new OkObjectResult(persons.First());
             } catch (Exception ex) {
